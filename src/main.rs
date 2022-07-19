@@ -18,23 +18,32 @@ fn main() {
 	test();
 }
 
-fn convert_date(date: Date<Local>) -> OrnellemberDate {
-	let months: [char; 13] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'];
-	
+fn get_month_index(date: Date<Local>) -> u32 {
 	let mut month_index: u32 = date.ordinal() / 28;
 	if month_index > 12 {
 		month_index = 12;
 	}
-	let month: char = months[month_index as usize];
 
-	let day_of_month = date.ordinal() - (month_index * 28);
+	month_index
+}
 
-	let date: OrnellemberDate = OrnellemberDate { 
-		day: day_of_month,
-		month: month,
+fn get_month(month_index: u32) -> char {
+	let months: [char; 13] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'];
+
+	months[month_index as usize]
+}
+
+
+fn convert_date(date: Date<Local>) -> OrnellemberDate {
+	let month_index: u32 = get_month_index(date);
+	let day: u32 = date.ordinal() - (month_index * 28);
+	let month: char = get_month(month_index);
+
+	OrnellemberDate { 
+		day,
+		month,
 		year: date.year()
-	};
-	date
+	}
 }
 
 fn test() {
