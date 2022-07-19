@@ -38,17 +38,39 @@ fn convert_date(date: Date<Local>) -> OrnellemberDate {
 }
 
 fn test() {
-	let jan_1_2022: Date<Local> = Local.ymd(2022, 01, 01);
-	let jan_29_1969: Date<Local> = Local.yo(1969, 29);
-	let dec_31_2022: Date<Local> = Local.yo(2022, 365);
-	let dec_31_2020: Date<Local> = Local.yo(2020, 366);
-	let fraser_pryce_first_gold: Date<Local> = Local.ymd(2008, 08, 16);
+	let cases = [
+		(
+			Local.ymd(2022, 01, 01),
+			OrnellemberDate {day: 1, month: 'A', year: 2022}
+		),
+		(
+			Local.yo(1969, 29),
+			OrnellemberDate {day: 1, month: 'B', year: 1969}
+		),
+		(
+			Local.yo(2022, 365),
+			OrnellemberDate {day: 29, month: 'M', year: 2022}
+		),
+		(
+			Local.yo(2020, 365),
+			OrnellemberDate {day: 29, month: 'M', year: 2020}
+		),
+		(
+			Local.yo(2020, 366),
+			OrnellemberDate {day: 30, month: 'M', year: 2020}
+		),
+		(
+			Local.ymd(2008, 08, 16),
+			OrnellemberDate {day: 5, month: 'I', year: 2008}
+		)
+	];
 
-	assert_eq!(convert_date(jan_1_2022), OrnellemberDate {day: 1, month: 'A', year: 2022});
-	assert_eq!(convert_date(jan_29_1969), OrnellemberDate {day: 1, month: 'B', year: 1969});
-	assert_eq!(convert_date(dec_31_2022), OrnellemberDate {day: 29, month: 'M', year: 2022});
-	assert_eq!(convert_date(dec_31_2020), OrnellemberDate {day: 30, month: 'M', year: 2020});
-	assert_eq!(convert_date(fraser_pryce_first_gold), OrnellemberDate {day: 5, month: 'I', year: 2008});
+
+	for i in 0..cases.len() {
+		let input = &cases[i].0;
+		let expected_output = &cases[i].1;
+		assert_eq!(convert_date(*input), *expected_output);
+	}
 
 }
 
